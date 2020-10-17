@@ -1,7 +1,5 @@
 import React from 'react';
-import RandomPokemon from '../lib/components/randomPokemon';
-
-const ErrorPage = (props) => {
+const ErrorPage = () => {
   return (
     <main className="page error">
       <h1>Error</h1>

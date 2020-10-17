@@ -7,13 +7,12 @@ const url = 'https://pokeapi.co/api/v2/pokemon-form/';
 
 ////handleCatchButton + handleEscapeButton == { Buttons };
 
-const Buttons = async ({ handleClick }) => {
+const Button = async ({ handleClick }) => {
   return (
     <div>
-      <button onClick={handleClick}>Catch</button>
-      <button onClick={handleClick}>Escape</button>
+      <button onClick={handleClick}>Play</button>
     </div>
   );
 };
 
-export default Buttons;
+export default Button;

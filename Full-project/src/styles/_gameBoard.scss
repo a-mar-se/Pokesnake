@@ -1,0 +1,22 @@
+$cell-number: 15;
+$vheight: 80vh;
+$vwidth: 90vw;
+$backc: rgb(39, 122, 255);
+
+.gameBoard {
+  background-color: lightgoldenrodyellow;
+  position: absolute;
+  top: 12.5%;
+  left: 5%;
+  height: $vheight;
+  width: $vwidth;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  .cell {
+    width: calc((#{$vwidth} / #{$cell-number}));
+    background: radial-gradient(white, rgb(255, 218, 96), $backc);
+    padding: 0;
+  }
+}

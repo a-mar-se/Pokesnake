@@ -1,3 +1,6 @@
-@import '../styles/App.css', '../styles/index.css', '../styles/BodyIndex.css',
-  '../styles/Header.css', '../styles/Collection.css', '../styles/footer.css',
-  '../styles/pokedex.css', '../styles/RrandomPokemon.css';
+@import 'header';
+@import 'page';
+@import 'main';
+@import 'footer';
+@import 'link_component';
+@import 'gameBoard';

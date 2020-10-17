@@ -1,27 +1,14 @@
 import React from 'react';
+
+import LinkComponent from './Link_component';
 const Header = () => {
   return (
-    <div>
-      <ul id="nav">
-        <li>
-          <a href="./contact">Contact</a>
-        </li>
-        <li>
-          <a href="./pokedex">Pokédex</a>
-        </li>
-        <li>
-          <a href="./search">Search</a>
-        </li>
-        <li>
-          <a href="./randomPokemon">Gotta catch them all!</a>
-        </li>
-        <li className="logo-container">
-          <a href="/" className="logo-container">
-            <img className="pika-sprite" />
-            Home
-          </a>
-        </li>
-      </ul>
+    <div id="nav">
+      <LinkComponent text="home" />
+      <LinkComponent text="contact" />
+      <LinkComponent text="play" />
+      <LinkComponent text="whatever" />
+      <LinkComponent text="contact" />
     </div>
   );
 };

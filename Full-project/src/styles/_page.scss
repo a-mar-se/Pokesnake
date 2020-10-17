@@ -1,0 +1,18 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 auto;
+  height: auto;
+  // flex-wrap: wrap;
+  background-color: lightgreen;
+  &.error {
+    animation: flash 1s infinite alternate linear;
+  }
+}
+
+@keyframes flash {
+  to {
+    background-color: red;
+    color: white;
+  }
+}
