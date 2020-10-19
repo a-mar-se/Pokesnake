@@ -13,6 +13,7 @@ import {
   WIDTH,
   ALLCELLS,
 } from '../lib/constants.js';
+// import moveSnake from '../lib/components/moveSnake.js';
 
 class Play extends React.Component {
   state = {
@@ -29,16 +30,32 @@ class Play extends React.Component {
     const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
     switch (this.state.direction) {
       case 'up':
-        snakeHead = snakeHead - WIDTH;
+        if (snakeHead < WIDTH) {
+          snakeHead = snakeHead + WIDTH * (WIDTH - 1);
+        } else {
+          snakeHead = snakeHead - WIDTH;
+        }
         break;
       case 'down':
-        snakeHead = snakeHead + WIDTH;
+        if (snakeHead > WIDTH * (WIDTH - 1)) {
+          snakeHead = snakeHead - WIDTH * (WIDTH - 1);
+        } else {
+          snakeHead = snakeHead + WIDTH;
+        }
         break;
       case 'left':
-        snakeHead = snakeHead - 1;
+        if (snakeHead % WIDTH == 0) {
+          snakeHead = snakeHead + WIDTH - 1;
+        } else {
+          snakeHead = snakeHead - 1;
+        }
         break;
       case 'right':
-        snakeHead = snakeHead + 1;
+        if (snakeHead % WIDTH == WIDTH - 1) {
+          snakeHead = snakeHead - WIDTH + 1;
+        } else {
+          snakeHead = snakeHead + 1;
+        }
         break;
     }
     snakeCopy.pop();
@@ -62,6 +79,16 @@ class Play extends React.Component {
     });
   };
 
+  handleKeyPress = (event) => {
+    console.log(event.key);
+    const keyDirections = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    const directions = ['up', 'down', 'left', 'right'];
+    this.changeDirection(directions[keyDirections.indexOf(event.key)]);
+  };
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyPress);
+  }
   render() {
     return (
       <main className="page home">
