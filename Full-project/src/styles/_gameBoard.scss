@@ -15,18 +15,22 @@ $backc: rgb(39, 122, 255);
 
   flex-wrap: wrap;
   justify-content: flex-start;
-
-  .cell {
+  * {
     width: calc((#{$vwidth} / #{$cell-number}));
-    padding: 0;
+  }
+  .cell {
     background: radial-gradient(white, rgb(255, 218, 96), $backc);
   }
   .snake {
     background: black;
     width: calc((#{$vwidth} / #{$cell-number}));
-    padding: 0;
+  }
+
+  .apple {
+    background: red;
   }
 }
+
 .controlers {
   position: absolute;
   bottom: 5%;
