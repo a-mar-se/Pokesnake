@@ -14,24 +14,20 @@ import {
   ALLCELLS,
 } from '../lib/constants.js';
 
-const Play = () => {
-  const [snake, setSnake] = useState(SNAKE_START);
+class Play extends React.Component {
+  state = {
+    snake: SNAKE_START,
+    allcells: ALLCELLS,
+    apple: APPLE_START,
+    direction: '',
+    speed: SPEED,
+    load: false,
+  };
 
-  const [apple, setApple] = useState(APPLE_START);
-  const [dir, setDir] = useState(DIRECTION);
-  const [speed, setSpeed] = useState(null);
-  const [gameOver, setGameOver] = useState(false);
-
-  // setTimeout(playing, speed);
-
-  function playing() {
-    moveSnake();
-  }
-
-  function moveSnake() {
-    let snakeHead = snake[0];
-    const snakeCopy = JSON.parse(JSON.stringify(snake));
-    switch (dir) {
+  moveSnake = () => {
+    let snakeHead = this.state.snake[0];
+    const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
+    switch (this.state.direction) {
       case 'up':
         snakeHead = snakeHead - WIDTH;
         break;
@@ -48,45 +44,53 @@ const Play = () => {
     snakeCopy.pop();
     snakeCopy.unshift(snakeHead);
     console.log(snakeCopy);
-    console.log(dir);
-    setSnake(snakeCopy);
-    // console.log('updatee ');
+    return this.setState({ snake: snakeCopy });
+  };
+
+  changeDirection = (direc) => {
+    this.setState({ load: true }, () => {
+      console.log('changing direction to:');
+      console.log(direc);
+      console.log(typeof direc);
+      this.setState({ direction: direc }, () => {
+        this.moveSnake();
+        console.log('changing direction to:');
+        console.log(this.state.direction);
+
+        this.setState({ load: false });
+      });
+    });
+  };
+
+  render() {
+    return (
+      <main className="page home">
+        <Controlers
+          moveLeft={() => this.changeDirection('left')}
+          moveUp={() => this.changeDirection('up')}
+          moveDown={() => this.changeDirection('down')}
+          moveRight={() => this.changeDirection('right')}
+        />{' '}
+        <div className="gameBoard">
+          {ALLCELLS.map((cell, i) => {
+            if (this.state.snake.includes(i)) {
+              return (
+                <div className="snake" key={cell}>
+                  {i + 1}
+                </div>
+              );
+            } else {
+              return (
+                <div className="cell" key={cell}>
+                  {i + 1}
+                </div>
+              );
+            }
+          })}
+        </div>
+      </main>
+    );
   }
-
-  function changeDirection(direction) {
-    // console.log({ direction });
-
-    setDir(direction);
-    moveSnake();
-  }
-
-  return (
-    <main className="page home">
-      <Controlers
-        moveLeft={() => changeDirection('left')}
-        moveUp={() => changeDirection('up')}
-        moveDown={() => changeDirection('down')}
-        moveRight={() => changeDirection('right')}
-      />{' '}
-      <div className="gameBoard">
-        {ALLCELLS.map((cell, i) => {
-          if (snake.includes(i)) {
-            return (
-              <div className="snake" key={cell}>
-                {i + 1}
-              </div>
-            );
-          } else {
-            return (
-              <div className="cell" key={cell}>
-                {i + 1}
-              </div>
-            );
-          }
-        })}
-      </div>
-    </main>
-  );
-};
+}
 
 export default Play;
