@@ -1,7 +1,17 @@
 const SNAKE_START = [0, 0, 0];
 const APPLE_START = [80];
 const SPEED = 3000;
-const DIRECTIONS = ['up', 'down', 'left', 'right'];
+const DIRECTION = 'right';
 const WIDTH = 10;
 
-export { SNAKE_START, APPLE_START, SPEED, DIRECTIONS, WIDTH };
+const ALLCELLS = [];
+
+function generateBoard() {
+  for (let i = 0; i < WIDTH ** 2; i++) {
+    ALLCELLS.push(i);
+  }
+  // console.log(ALLCELLS);
+}
+generateBoard();
+
+export { SNAKE_START, APPLE_START, SPEED, DIRECTION, WIDTH, ALLCELLS };

@@ -9,32 +9,24 @@ import {
   SNAKE_START,
   APPLE_START,
   SPEED,
-  DIRECTIONS,
+  DIRECTION,
   WIDTH,
+  ALLCELLS,
 } from '../lib/constants.js';
 
 const Play = () => {
   const [snake, setSnake] = useState(SNAKE_START);
 
   const [apple, setApple] = useState(APPLE_START);
-  const [dir, setDir] = useState([0, -1]);
+  const [dir, setDir] = useState(DIRECTION);
   const [speed, setSpeed] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
-  const allCells = [];
-
-  setTimeout(playing, speed);
+  // setTimeout(playing, speed);
 
   function playing() {
     moveSnake();
   }
-  function generateBoard() {
-    for (let i = 0; i < WIDTH ** 2; i++) {
-      allCells.push(i);
-    }
-    console.log(allCells);
-  }
-  generateBoard();
 
   function moveSnake() {
     let snakeHead = snake[0];
@@ -56,11 +48,13 @@ const Play = () => {
     snakeCopy.pop();
     snakeCopy.unshift(snakeHead);
     console.log(snakeCopy);
+    console.log(dir);
     setSnake(snakeCopy);
+    // console.log('updatee ');
   }
 
   function changeDirection(direction) {
-    console.log({ direction });
+    // console.log({ direction });
 
     setDir(direction);
     moveSnake();
@@ -75,7 +69,7 @@ const Play = () => {
         moveRight={() => changeDirection('right')}
       />{' '}
       <div className="gameBoard">
-        {allCells.map((cell, i) => {
+        {ALLCELLS.map((cell, i) => {
           if (snake.includes(i)) {
             return (
               <div className="snake" key={cell}>
