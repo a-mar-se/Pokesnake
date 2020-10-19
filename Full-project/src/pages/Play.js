@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import GameBoard from '../lib/components/GameBoard.js';
 import Controlers from '../lib/components/Controlers.js';
@@ -20,9 +20,12 @@ class Play extends React.Component {
     snake: SNAKE_START,
     allcells: ALLCELLS,
     apple: APPLE_START,
-    direction: '',
+    direction: DIRECTION,
     speed: SPEED,
     load: false,
+    time: 0,
+    playing: false,
+    apples: [],
   };
 
   moveSnake = () => {
@@ -60,35 +63,64 @@ class Play extends React.Component {
     }
     snakeCopy.pop();
     snakeCopy.unshift(snakeHead);
-    console.log(snakeCopy);
     return this.setState({ snake: snakeCopy });
   };
 
   changeDirection = (direc) => {
     this.setState({ load: true }, () => {
-      console.log('changing direction to:');
-      console.log(direc);
-      console.log(typeof direc);
       this.setState({ direction: direc }, () => {
         this.moveSnake();
-        console.log('changing direction to:');
-        console.log(this.state.direction);
-
         this.setState({ load: false });
       });
     });
   };
 
   handleKeyPress = (event) => {
-    console.log(event.key);
     const keyDirections = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     const directions = ['up', 'down', 'left', 'right'];
-    this.changeDirection(directions[keyDirections.indexOf(event.key)]);
+    if (keyDirections.indexOf(event.key) != -1) {
+      this.changeDirection(directions[keyDirections.indexOf(event.key)]);
+    }
   };
 
+  appearApple() {
+    function generateNumber() {
+      return Math.floor(Math.random() * WIDTH);
+    }
+    // Generate random coordinates for the apple
+    let wrongPosition = true;
+    const applePositions = this.state.apples;
+    console.log(applePositions);
+    while (wrongPosition) {
+      const applePositionx = 1 + generateNumber();
+
+      const applePositiony = 1 + generateNumber();
+      const newApple = applePositionx + applePositiony * WIDTH;
+      applePositions.push(newApple);
+
+      wrongPosition = this.state.snake.includes(newApple);
+      if (newApple == SNAKE_START) {
+        wrongPosition = true;
+      }
+      this.setState({ apples: applePositions });
+
+      console.log(`Apple created at position ${newApple}`);
+    }
+  }
+
+  runTime() {
+    this.setState({ playing: true, time: this.state.time });
+    this.timer = setTimeout(() => {
+      console.log('tick tack');
+      this.moveSnake();
+    }, 300);
+  }
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyPress);
+    this.appearApple();
+    // this.runTime();
   }
+
   render() {
     return (
       <main className="page home">
@@ -107,6 +139,13 @@ class Play extends React.Component {
                 </div>
               );
             } else {
+              if (this.state.apples.includes(i)) {
+                return (
+                  <div className="apple" key={cell}>
+                    {i + 1}
+                  </div>
+                );
+              }
               return (
                 <div className="cell" key={cell}>
                   {i + 1}
