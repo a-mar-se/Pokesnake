@@ -1,5 +1,5 @@
-$cell-number: 15;
-$vheight: 80vh;
+$cell-number: 10;
+$vheight: 60vh;
 $vwidth: 90vw;
 $backc: rgb(39, 122, 255);
 
@@ -11,12 +11,71 @@ $backc: rgb(39, 122, 255);
   height: $vheight;
   width: $vwidth;
   display: flex;
+  // grid-template: repeat(1fr, $cell-number) / repeat(1fr, $cell-number);
+
   flex-wrap: wrap;
   justify-content: flex-start;
 
   .cell {
     width: calc((#{$vwidth} / #{$cell-number}));
-    background: radial-gradient(white, rgb(255, 218, 96), $backc);
     padding: 0;
+    background: radial-gradient(white, rgb(255, 218, 96), $backc);
+  }
+  .snake {
+    background: black;
+    width: calc((#{$vwidth} / #{$cell-number}));
+    padding: 0;
+  }
+}
+.controlers {
+  position: absolute;
+  bottom: 5%;
+  width: 80%;
+  margin: 0 10%;
+  height: 20vh;
+  background-color: rgba(156, 131, 131, 0.459);
+  display: grid;
+  grid-template: 1fr / 1fr 1fr 1fr;
+  // flex-direction: row;
+  // flex-wrap: wrap;
+  align-items: center;
+
+  .left,
+  .right {
+    background-color: white;
+    border: solid;
+    margin: 10px;
+    display: flex;
+    height: 40%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+  * {
+    text-align: center;
+    height: calc(100% - 20px);
+    // min-height: 50%;
+    display: grid;
+    grid-template: 1fr 1fr /1fr;
+
+    * {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      height: calc(100% - 10px);
+      margin: 0;
+      border: solid;
+      background-color: white;
+    }
+    .up {
+      // background-color: white;
+      margin: 0 0 5px 0;
+    }
+    .down {
+      // background-color: white;
+      margin: 5px 0 0 0;
+    }
   }
 }
