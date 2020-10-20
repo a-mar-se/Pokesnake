@@ -23,9 +23,9 @@ class Play extends React.Component {
     direction: DIRECTION,
     speed: SPEED,
     load: false,
-    time: 0,
-    playing: false,
     apples: [],
+    intervalId: null,
+    speedIncrease: 300,
   };
 
   moveSnake = () => {
@@ -63,8 +63,38 @@ class Play extends React.Component {
     }
     snakeCopy.pop();
     snakeCopy.unshift(snakeHead);
-    return this.setState({ snake: snakeCopy });
+    this.setState({ snake: snakeCopy });
+    this.checkIfEats();
   };
+
+  checkIfEats() {
+    let snakeHead = this.state.snake[0];
+    const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
+    const applesCopy = JSON.parse(JSON.stringify(this.state.apples));
+
+    let spp = this.state.speed;
+    for (let i = 0; i < applesCopy.length; i++) {
+      const applePosition = applesCopy[i];
+      if (snakeHead === applePosition) {
+        const speedIncrease = this.state.speedIncrease;
+        function eatApple() {
+          snakeCopy.push(snakeCopy[snakeCopy.length - 1]);
+          applesCopy.splice(applesCopy.indexOf(applePosition), 1);
+          spp = spp + speedIncrease;
+          console.log(spp);
+        }
+        eatApple(snakeHead);
+        this.setState({ speed: spp });
+        this.setState({ apples: applesCopy });
+        this.appearApple();
+
+        setInterval(this.runTime(), 1);
+      }
+    }
+    // console.log(`${this.state.apples}`);
+    this.setState({ snake: snakeCopy, speed: spp });
+    // this.state.intervalId = nuldfl;
+  }
 
   changeDirection = (direc) => {
     this.setState({ load: true }, () => {
@@ -87,38 +117,35 @@ class Play extends React.Component {
     function generateNumber() {
       return Math.floor(Math.random() * WIDTH);
     }
-    // Generate random coordinates for the apple
     let wrongPosition = true;
+    let newApple = 100;
     const applePositions = this.state.apples;
-    console.log(applePositions);
     while (wrongPosition) {
-      const applePositionx = 1 + generateNumber();
-
-      const applePositiony = 1 + generateNumber();
-      const newApple = applePositionx + applePositiony * WIDTH;
-      applePositions.push(newApple);
-
+      const applePositionx = generateNumber();
+      const applePositiony = generateNumber();
+      newApple = applePositionx + applePositiony * WIDTH;
       wrongPosition = this.state.snake.includes(newApple);
       if (newApple == SNAKE_START) {
         wrongPosition = true;
       }
-      this.setState({ apples: applePositions });
-
-      console.log(`Apple created at position ${newApple}`);
     }
+    applePositions.push(newApple);
+    console.log(`Apple created at position ${newApple}`);
+    this.setState({ apples: applePositions });
+    console.log(applePositions);
   }
 
-  runTime() {
-    this.setState({ playing: true, time: this.state.time });
-    this.timer = setTimeout(() => {
-      console.log('tick tack');
-      this.moveSnake();
-    }, 300);
-  }
+  runTime = () => {
+    setInterval(this.moveSnake, 10 ** 6 / this.state.speed);
+  };
+  startTimer = (event) => {
+    setInterval(this.runTime(), 1);
+  };
+
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyPress);
     this.appearApple();
-    // this.runTime();
+    window.addEventListener('keydown', this.handleKeyPress);
+    setTimeout(this.startTimer, 1);
   }
 
   render() {

@@ -1,4 +1,4 @@
-moveSnake = () => {
+export function moveSnake() {
   let snakeHead = this.state.snake[0];
   const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
   switch (this.state.direction) {
@@ -19,5 +19,4 @@ moveSnake = () => {
   snakeCopy.unshift(snakeHead);
   console.log(snakeCopy);
   return this.setState({ snake: snakeCopy });
-};
-export default moveSnake;
+}

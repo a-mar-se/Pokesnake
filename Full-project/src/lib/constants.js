@@ -1,6 +1,6 @@
 const SNAKE_START = [0, 0, 0];
 const APPLE_START = [80];
-const SPEED = 3000;
+const SPEED = 1 * 3000;
 const DIRECTION = 'right';
 const WIDTH = 10;
 
