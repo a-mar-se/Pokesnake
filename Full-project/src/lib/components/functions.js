@@ -1,18 +1,18 @@
-import React from 'react';
+import { WIDTH } from '../constants.js';
 
-import { useEffect } from 'react';
-
-import GameBoard from './GameBoard.js';
-import Controlers from './Controlers.js';
-
-import {
-  SNAKE_START,
-  APPLE_START,
-  SPEED,
-  DIRECTION,
-  WIDTH,
-  ALLCELLS,
-} from '../constants.js';
+export function updateCompanions(pokemonsLast, snakeNow) {
+  console.log(pokemonsLast);
+  const pokemonsCopy = [...pokemonsLast];
+  console.log(pokemonsCopy);
+  const newPokemons = pokemonsCopy.map((elem) => {
+    const { img } = elem;
+    const newPosition = snakeNow[pokemonsLast.indexOf(elem)];
+    return { position: newPosition, img: img };
+  });
+  console.log(newPokemons);
+  // return [24, 34];
+  return newPokemons;
+}
 
 export function updateSnake(direction, snake) {
   let snakeHead = snake[0];
@@ -47,10 +47,12 @@ export function updateSnake(direction, snake) {
           snakeHead = snakeHead + 1;
         }
         break;
+      default:
+        console.log('That Key doesn´t do anything...');
     }
     snakeCopy.pop();
     snakeCopy.unshift(snakeHead);
-    console.log(snakeCopy);
+    // console.log(snakeCopy);
   }
   updatee();
   // console.log(snakeCopy);
@@ -58,7 +60,7 @@ export function updateSnake(direction, snake) {
 }
 
 export function appearNewApple(applePositions, snake) {
-  console.log(applePositions, snake);
+  // console.log(applePositions, snake);
 
   function generateNumber() {
     return Math.floor(Math.random() * WIDTH);
@@ -92,7 +94,7 @@ export function updateApples(apples, speed, snake, speedIncrease) {
         snakeCopy.push(snakeCopy[snakeCopy.length - 1]);
         applesCopy.splice(applesCopy.indexOf(applePosition), 1);
         spp = spp + speedIncrease;
-        console.log(spp);
+        // console.log(spp);
         applesCopy.push(appearNewApple(applesCopy, snakeCopy));
       }
       eatApple(snakeHead);
