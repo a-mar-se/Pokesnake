@@ -32,6 +32,7 @@ class Play extends React.Component {
     intervalId: null,
     speedIncrease: SPEED_INCREASE,
     load: true,
+    pokemonsCollected: [27],
   };
 
   moveSnake = () => {
@@ -110,14 +111,23 @@ class Play extends React.Component {
           moveUp={() => this.changeDirection('up')}
           moveDown={() => this.changeDirection('down')}
           moveRight={() => this.changeDirection('right')}
-        />{' '}
+        />
         <div className="gameBoard">
+          {this.state.pokemonsCollected.map((pokemon, i) => {
+            return (
+              <div className="snake" key={i} pokemon={pokemon}>
+                {i + 1}
+              </div>
+            );
+          })}
+          ;
           {ALLCELLS.map((cell, i) => {
             if (this.state.snake.includes(i)) {
               return (
-                <div className="snake" key={cell}>
-                  {i + 1}
-                </div>
+                // <div className="snake" key={cell} pokemon={}>
+                // {i + 1}
+                // </div>
+                <></>
               );
             } else {
               if (this.state.apples.includes(i)) {
