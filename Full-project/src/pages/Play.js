@@ -1,9 +1,14 @@
 import React from 'react';
 
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 
-import GameBoard from '../lib/components/GameBoard.js';
+// import GameBoard from '../lib/components/GameBoard.js';
 import Controlers from '../lib/components/Controlers.js';
+import {
+  updateSnake,
+  updateApples,
+  appearNewApple,
+} from '../lib/components/functions.js';
 
 import {
   SNAKE_START,
@@ -12,88 +17,51 @@ import {
   DIRECTION,
   WIDTH,
   ALLCELLS,
+  SPEED_INCREASE,
 } from '../lib/constants.js';
-// import moveSnake from '../lib/components/moveSnake.js';
 
+var tickTackClock;
 class Play extends React.Component {
   state = {
     snake: SNAKE_START,
     allcells: ALLCELLS,
-    apple: APPLE_START,
     direction: DIRECTION,
     speed: SPEED,
     load: false,
     apples: [],
     intervalId: null,
-    speedIncrease: 300,
+    speedIncrease: SPEED_INCREASE,
+    load: true,
   };
 
   moveSnake = () => {
-    let snakeHead = this.state.snake[0];
-    const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
-    switch (this.state.direction) {
-      case 'up':
-        if (snakeHead < WIDTH) {
-          snakeHead = snakeHead + WIDTH * (WIDTH - 1);
-        } else {
-          snakeHead = snakeHead - WIDTH;
-        }
-        break;
-      case 'down':
-        if (snakeHead > WIDTH * (WIDTH - 1)) {
-          snakeHead = snakeHead - WIDTH * (WIDTH - 1);
-        } else {
-          snakeHead = snakeHead + WIDTH;
-        }
-        break;
-      case 'left':
-        if (snakeHead % WIDTH == 0) {
-          snakeHead = snakeHead + WIDTH - 1;
-        } else {
-          snakeHead = snakeHead - 1;
-        }
-        break;
-      case 'right':
-        if (snakeHead % WIDTH == WIDTH - 1) {
-          snakeHead = snakeHead - WIDTH + 1;
-        } else {
-          snakeHead = snakeHead + 1;
-        }
-        break;
-    }
-    snakeCopy.pop();
-    snakeCopy.unshift(snakeHead);
+    const snakeCopy = updateSnake(this.state.direction, this.state.snake);
     this.setState({ snake: snakeCopy });
     this.checkIfEats();
   };
 
   checkIfEats() {
-    let snakeHead = this.state.snake[0];
-    const snakeCopy = JSON.parse(JSON.stringify(this.state.snake));
-    const applesCopy = JSON.parse(JSON.stringify(this.state.apples));
+    const previousApples = this.state.apples;
+    const { snakeCopy, spp, applesCopy } = updateApples(
+      this.state.apples,
+      this.state.speed,
+      this.state.snake,
+      this.state.speedIncrease,
+    );
+    this.setState({ load: true }, () => {
+      this.setState(
+        { snake: snakeCopy, speed: spp, apples: applesCopy },
+        () => {
+          console.log(previousApples);
+          // console.log(this.state.apples);
+          // if ([...previousApples] != [...applesCopy]) {
+          //   console.log(`Apple eaten at ${previousApples}`);
+          // this.appearApple();
+        },
+      );
 
-    let spp = this.state.speed;
-    for (let i = 0; i < applesCopy.length; i++) {
-      const applePosition = applesCopy[i];
-      if (snakeHead === applePosition) {
-        const speedIncrease = this.state.speedIncrease;
-        function eatApple() {
-          snakeCopy.push(snakeCopy[snakeCopy.length - 1]);
-          applesCopy.splice(applesCopy.indexOf(applePosition), 1);
-          spp = spp + speedIncrease;
-          console.log(spp);
-        }
-        eatApple(snakeHead);
-        this.setState({ speed: spp });
-        this.setState({ apples: applesCopy });
-        this.appearApple();
-
-        setInterval(this.runTime(), 1);
-      }
-    }
-    // console.log(`${this.state.apples}`);
-    this.setState({ snake: snakeCopy, speed: spp });
-    // this.state.intervalId = nuldfl;
+      this.setState({ load: false });
+    });
   }
 
   changeDirection = (direc) => {
@@ -114,29 +82,15 @@ class Play extends React.Component {
   };
 
   appearApple() {
-    function generateNumber() {
-      return Math.floor(Math.random() * WIDTH);
-    }
-    let wrongPosition = true;
-    let newApple = 100;
+    const newApple = appearNewApple(this.state.apples, this.state.snake);
     const applePositions = this.state.apples;
-    while (wrongPosition) {
-      const applePositionx = generateNumber();
-      const applePositiony = generateNumber();
-      newApple = applePositionx + applePositiony * WIDTH;
-      wrongPosition = this.state.snake.includes(newApple);
-      if (newApple == SNAKE_START) {
-        wrongPosition = true;
-      }
-    }
     applePositions.push(newApple);
     console.log(`Apple created at position ${newApple}`);
     this.setState({ apples: applePositions });
-    console.log(applePositions);
   }
 
   runTime = () => {
-    setInterval(this.moveSnake, 10 ** 6 / this.state.speed);
+    tickTackClock = setInterval(this.moveSnake, 10 ** 6 / this.state.speed);
   };
   startTimer = (event) => {
     setInterval(this.runTime(), 1);

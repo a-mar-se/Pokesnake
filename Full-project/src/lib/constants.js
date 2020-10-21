@@ -1,6 +1,7 @@
 const SNAKE_START = [0, 0, 0];
 const APPLE_START = [80];
 const SPEED = 1 * 3000;
+const SPEED_INCREASE = 0;
 const DIRECTION = 'right';
 const WIDTH = 10;
 
@@ -14,4 +15,12 @@ function generateBoard() {
 }
 generateBoard();
 
-export { SNAKE_START, APPLE_START, SPEED, DIRECTION, WIDTH, ALLCELLS };
+export {
+  SNAKE_START,
+  APPLE_START,
+  SPEED,
+  DIRECTION,
+  WIDTH,
+  ALLCELLS,
+  SPEED_INCREASE,
+};
