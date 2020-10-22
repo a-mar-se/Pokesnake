@@ -14,6 +14,24 @@ export function updateCompanions(pokemonsLast, snakeNow) {
   return newPokemons;
 }
 
+export function generateNewWildPokemon(pokemonCollected) {
+  function randomPokemon() {
+    return Math.floor(1 + Math.random() * 152);
+  }
+  let wrongPokemon = true;
+  let newPok = randomPokemon();
+  while (wrongPokemon) {
+    wrongPokemon = false;
+    newPok = randomPokemon();
+    pokemonCollected.map((pokemon) => {
+      if (pokemon.id == newPok) {
+        wrongPokemon = true;
+      }
+    });
+  }
+  return newPok;
+}
+
 export function updateSnake(direction, snake) {
   let snakeHead = snake[0];
   const snakeCopy = JSON.parse(JSON.stringify(snake));
@@ -55,7 +73,7 @@ export function updateSnake(direction, snake) {
     // console.log(snakeCopy);
   }
   updatee();
-  // console.log(snakeCopy);
+  console.log({ snakeCopy });
   return snakeCopy;
 }
 

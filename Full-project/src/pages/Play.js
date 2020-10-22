@@ -9,6 +9,7 @@ import {
   updateApples,
   appearNewApple,
   updateCompanions,
+  generateNewWildPokemon,
 } from '../lib/components/functions.js';
 
 import PokemonOnScreen from '../lib/components/PokemonOnScreen.js';
@@ -26,8 +27,8 @@ import {
 var tickTackClock;
 class Play extends React.Component {
   state = {
-    // snake: SNAKE_START,
-    snake: [2, 1, 0],
+    snake: SNAKE_START,
+    // snake: [2, 1, 0],
     allcells: ALLCELLS,
     direction: DIRECTION,
     speed: SPEED,
@@ -46,7 +47,7 @@ class Play extends React.Component {
           if (i.id == initialPokemon) {
             const pokemons = this.state.pokemonsCollected;
             pokemons.push({
-              position: jj,
+              position: this.state.snake[jj],
               img: i.img,
             });
             this.setState({
@@ -61,8 +62,8 @@ class Play extends React.Component {
   moveSnake = () => {
     const snakeCopy = updateSnake(this.state.direction, this.state.snake);
     // this.setState({ snake: snakeCopy });
-    console.log(this.state);
-    console.log(this.state.pokemonsCollected);
+    // console.log(this.state);
+    // console.log(this.state.pokemonsCollected);
     const newCollectedPokemon = updateCompanions(
       this.state.pokemonsCollected,
       snakeCopy,
@@ -144,11 +145,28 @@ class Play extends React.Component {
   };
 
   appearApple() {
-    const newApple = appearNewApple(this.state.apples, this.state.snake);
-    const applePositions = this.state.apples;
-    applePositions.push(newApple);
-    console.log(`Apple created at position ${newApple}`);
-    this.setState({ apples: applePositions });
+    const newWildPokemon = generateNewWildPokemon(this.state.pokemonsCollected);
+    this.props.allPokemon.map((i) => {
+      // const initialPokemon = 150;
+      if (i.id == newWildPokemon) {
+        const apples = this.state.apples;
+        const newApple = appearNewApple(
+          this.state.apples.positions,
+          this.state.snake,
+        );
+        apples.push({
+          position: newApple,
+          img: i.img,
+          name: i.name,
+          id: i.id,
+        });
+        console.log(`Apple created at position ${newApple}`);
+        this.setState({
+          apples,
+        });
+      }
+    });
+    console.log(this.state.apples);
   }
 
   runTime = () => {
@@ -189,6 +207,19 @@ class Play extends React.Component {
                           key={pokemon.id}
                           id={pokemon.id}
                         />
+                      );
+                    }
+                  })}{' '}
+                  {this.state.apples.map((wildPokemon) => {
+                    if (cell == wildPokemon.position) {
+                      return (
+                        <PokemonOnScreen
+                          img={wildPokemon.img}
+                          name={wildPokemon.name}
+                          key={wildPokemon.id}
+                          id={wildPokemon.id}
+                        />
+                        // <div id="apple"></div>
                       );
                     }
                   })}

@@ -1,13 +1,13 @@
 $cell-number: 10;
 $vheight: 60vh;
-$vwidth: 90vw;
+$vwidth: 60vh;
 $backc: rgb(39, 122, 255);
 
 .gameBoard {
   background-color: lightgoldenrodyellow;
   position: absolute;
   top: 12.5%;
-  left: 5%;
+  left: calc((100% - #{$vwidth}) / 2);
   height: $vheight;
   width: $vwidth;
   display: flex;
@@ -27,15 +27,13 @@ $backc: rgb(39, 122, 255);
       rgba(255, 218, 96, 0.472),
       $backc
     );
+    // display: flex;
+    // flex-wrap: wrap;
   }
   .snake {
     background: black;
     width: calc((#{$vwidth} / #{$cell-number}));
     height: calc((#{$vheight} / #{$cell-number}));
-  }
-
-  .apple {
-    background: red;
   }
 }
 
@@ -93,9 +91,18 @@ $backc: rgb(39, 122, 255);
 }
 
 img {
-  margin: 0;
-  padding: 0;
+  // margin: 0;
+  // padding: 0;
+  position: relative;
+  top: 0;
   background: radial-gradient(rgb(79, 243, 79), rgba(0, 0, 0, 0));
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 200%;
+}
+#apple {
+  background: red;
+  border: solid 1px;
+
+  width: calc((#{$vwidth} / #{$cell-number}));
+  height: calc((#{$vheight} / #{$cell-number}));
 }
