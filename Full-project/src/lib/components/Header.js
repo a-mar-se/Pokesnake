@@ -7,7 +7,7 @@ const Header = () => {
       <LinkComponent text="home" />
       <LinkComponent text="contact" />
       <LinkComponent text="play" />
-      <LinkComponent text="whatever" />
+      <LinkComponent text="pokedex" />
       <LinkComponent text="contact" />
     </div>
   );

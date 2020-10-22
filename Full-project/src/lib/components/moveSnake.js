@@ -17,6 +17,6 @@ export function moveSnake() {
   }
   snakeCopy.pop();
   snakeCopy.unshift(snakeHead);
-  console.log(snakeCopy);
+  // console.log(snakeCopy);
   return this.setState({ snake: snakeCopy });
 }
